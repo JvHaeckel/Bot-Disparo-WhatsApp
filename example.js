@@ -1,6 +1,5 @@
 const sheetdb = require("sheetdb-node");  //  Importação de pacote 
-
-const clientSheet = sheetdb ({address: 'vuqk2u1gjxtva'});
+const clientSheet = sheetdb ({address: 'vuqk2u1gjxtva'});  // Aqui vc coloca o endereço da API que vc criou no site: https://sheetdb.io/app/apis
 
 const { Client, Location, Poll, List, Buttons, LocalAuth } = require('./index');
 
