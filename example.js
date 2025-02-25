@@ -1,3 +1,7 @@
+const sheetdb = require("sheetdb-node");  //  Importação de pacote 
+
+const clientSheet = sheetdb ({address: 'qpomoblx8ae1j'});
+
 const { Client, Location, Poll, List, Buttons, LocalAuth } = require('./index');
 
 const client = new Client({
@@ -54,8 +58,56 @@ client.on('ready', async () => {
     
 });
 
+function isEmptyObject(obj) {
+    for (var key in obj){
+        if (Object.prototype.hasOwnProperty.call(obj, key)){
+            return false;
+        }
+    }
+    return true;
+}
+
+
 client.on('message', async msg => {
     console.log('MESSAGE RECEIVED', msg);
+
+    /* Captura a pessoa e verifica se existe esse núemro na nossa planilha*/
+
+    const user = msg.from.replace(/\D/g, '');
+    
+    clientSheet.read({ search: {whatsapp: user} }).then (function (data) {
+        const userJson = JSON.parse(data) ;
+        if (isEmptyObject (userJson)) {
+        clientSheet.create ({ name: "Bot", whatsapp: user }).then(function (data) {
+            console.log (data);
+        }, function(err){
+            console.log(err);
+        });
+        }
+}, function (err){
+    console.log(err);
+        });
+
+        /* */
+
+        if (msg.body.startsWith (' !sheet ')) {
+            const mensagem = msg. body.slice (7) ;
+            clientSheet.read().then (function (data) {
+                const respostas = JSON. parse (data) ;
+                    respostas. forEach ((resposta, i) => {
+                        const whatsapp = resposta. whatsapp; 
+                        setTimeout (function() {
+            client.sendMessage (whatsapp + '@c.us', mensagem);
+                        }, 1000 + Math. floor (Math. random () * 8000) * (1+i) ) });
+            
+                    }, function (error){
+                        console.log(error);
+                            });
+   
+                        }
+                    
+
+
 
     if (msg.body === '!ping reply') {
         // Send a new message as a reply to the current one
