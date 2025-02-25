@@ -1,6 +1,6 @@
 const sheetdb = require("sheetdb-node");  //  Importação de pacote 
 
-const clientSheet = sheetdb ({address: 'qpomoblx8ae1j'});
+const clientSheet = sheetdb ({address: 'vuqk2u1gjxtva'});
 
 const { Client, Location, Poll, List, Buttons, LocalAuth } = require('./index');
 
@@ -71,7 +71,7 @@ function isEmptyObject(obj) {
 client.on('message', async msg => {
     console.log('MESSAGE RECEIVED', msg);
 
-    /* Captura a pessoa e verifica se existe esse núemro na nossa planilha*/
+    /* Captura a pessoa e verifica se existe esse número na nossa planilha*/
 
     const user = msg.from.replace(/\D/g, '');
     
@@ -95,7 +95,7 @@ client.on('message', async msg => {
             clientSheet.read().then (function (data) {
                 const respostas = JSON. parse (data) ;
                     respostas. forEach ((resposta, i) => {
-                        const whatsapp = resposta. whatsapp; 
+                        const whatsapp = resposta.whatsapp; 
                         setTimeout (function() {
             client.sendMessage (whatsapp + '@c.us', mensagem);
                         }, 1000 + Math. floor (Math. random () * 8000) * (1+i) ) });
@@ -103,17 +103,27 @@ client.on('message', async msg => {
                     }, function (error){
                         console.log(error);
                             });
-   
                         }
                     
-
-
 
     if (msg.body === '!ping reply') {
         // Send a new message as a reply to the current one
         msg.reply('pong');
 
-    } else if (msg.body === '!ping') {
+    } else if (msg.body.toLowerCase === 'oi' || 'e ai' || 'boa noite' || 'boa tarde' || 'ola' || 'ei' || 'tu' ) {
+        
+        client.sendMessage(msg.from, 'Oi, sou o Brigs seu assistente, Bem vindo');
+        client.sendMessage(msg.from, 'Digite a opção desejada:');
+        client.sendMessage(msg.from, '1 - Brigadeiros');
+        client.sendMessage(msg.from, '2 - Sacolé');
+    }
+        // client.sendMessage(msg.from, ''); Fazer ainda algo engraçado
+       else if (message.body.toLocaleLowerCase ===  "1") {
+            client.sendMessage(msg.from, 'Digite a opção desejada:');
+            client.sendMessage(msg.from, '1 - Ninho');
+            client.sendMessage(msg.from, '2- Chocolate');
+        }
+	    else if (msg.body === 'ping') {
         // Send a new message to the same chat
         client.sendMessage(msg.from, 'pong');
 
@@ -139,8 +149,10 @@ client.on('message', async msg => {
     } else if (msg.body.startsWith('!echo ')) {
         // Replies with the same message
         msg.reply(msg.body.slice(6));
+
     } else if (msg.body.startsWith('!preview ')) {
         const text = msg.body.slice(9);
+
         msg.reply(text, null, { linkPreview: true });
     } else if (msg.body.startsWith('!desc ')) {
         // Change the group description
@@ -170,6 +182,7 @@ client.on('message', async msg => {
     } else if (msg.body.startsWith('!addmembers')) {
         const group = await msg.getChat();
         const result = await group.addParticipants(['number1@c.us', 'number2@c.us', 'number3@c.us']);
+        
         /**
          * The example of the {@link result} output:
          *
@@ -194,10 +207,12 @@ client.on('message', async msg => {
          * For more usage examples:
          * @see https://github.com/pedroslopez/whatsapp-web.js/pull/2344#usage-example1
          */
+
         console.log(result);
     } else if (msg.body === '!creategroup') {
         const partitipantsToAdd = ['number1@c.us', 'number2@c.us', 'number3@c.us'];
         const result = await client.createGroup('Group Title', partitipantsToAdd);
+       
         /**
          * The example of the {@link result} output:
          * {
@@ -238,6 +253,7 @@ client.on('message', async msg => {
          * For more usage examples:
          * @see https://github.com/pedroslopez/whatsapp-web.js/pull/2344#usage-example2
          */
+
         console.log(result);
     } else if (msg.body === '!groupinfo') {
         let chat = await msg.getChat();
